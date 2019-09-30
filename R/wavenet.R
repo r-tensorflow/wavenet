@@ -73,7 +73,7 @@ wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape 
     keras::layer_conv_1d(
       filters = output_channels,
       kernel_size = 1,
-      activation = "softmax"
+      activation = output_activation
     )
 
   keras::keras_model(input, output)
