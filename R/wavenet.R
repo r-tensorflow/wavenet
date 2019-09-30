@@ -10,15 +10,19 @@
 #' @param residual_blocks if a single integer: the number of residual blocks in the
 #'  model - the dilation rate of each block is calculated by `2^i`. if a vector,
 #'  then it's used as the dilation rate of each residual block.
-#' @param include_top wether to include the 256 softmax output layer.
+#' @param output_channels number of channels in the output.
+#' @param output_activation activation function for the last layer. default: 'softmax'
+#' @param initial_kernel_size kernel size of the first causal convolution.
+#' @param initial_filters number of filters in the initial causal convolution.
 #'
 #' @inheritParams keras::layer_conv_1d
 #'
 #'
 #' @importFrom zeallot %<-%
 #' @export
-wavenet <- function(filters, kernel_size, residual_blocks, input_shape = NULL,
-                    input_tensor = NULL, include_top = TRUE) {
+wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape = list(NULL, 1),
+                    input_tensor = NULL, initial_kernel_size = 32, initial_filters = 32,
+                    output_channels = 256, output_activation = "softmax") {
 
   if (is.null(input_shape) && is.null(input_tensor))
     stop("You must specify one of `input_shape` or `input_tensor`.", call. = FALSE)
@@ -29,11 +33,11 @@ wavenet <- function(filters, kernel_size, residual_blocks, input_shape = NULL,
     input <- input_tensor
   }
 
+  # https://github.com/ibab/tensorflow-wavenet/blob/master/wavenet/ops.py#L46
   x <- keras::layer_conv_1d(
     object = input,
-    filters = filters,
-    kernel_size = kernel_size,
-    dilation_rate = 1,
+    filters = initial_filters,
+    kernel_size = initial_kernel_size,
     padding = "causal"
   )
 
@@ -61,14 +65,16 @@ wavenet <- function(filters, kernel_size, residual_blocks, input_shape = NULL,
   output <- skip_connections %>%
     keras::layer_add() %>%
     keras::layer_activation(activation = "relu") %>%
-    keras::layer_conv_1d(filters = 1, kernel_size = 1, activation = "relu") %>%
-    keras::layer_conv_1d(filters = 1, kernel_size = 1) %>%
-    keras::layer_flatten()
-
-  if (include_top) {
-    output <- output %>%
-      keras::layer_dense(units = 256, activation = "softmax")
-  }
+    keras::layer_conv_1d(
+      filters = initial_filters/2L, # reduces the number of filters
+      kernel_size = 1,
+      activation = "relu"
+    ) %>%
+    keras::layer_conv_1d(
+      filters = output_channels,
+      kernel_size = 1,
+      activation = "softmax"
+    )
 
   keras::keras_model(input, output)
 }

@@ -3,13 +3,13 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
   inherit = keras::KerasLayer,
   public = list(
 
-    num_filters = NULL,
+    filters = NULL,
     kernel_size = NULL,
     dilation_rate = NULL,
 
-    initialize = function(num_filters, kernel_size, dilation_rate) {
+    initialize = function(filters, kernel_size, dilation_rate) {
 
-      self$num_filters <- num_filters
+      self$filters <- filters
       self$kernel_size <- kernel_size
       self$dilation_rate <- dilation_rate
 
@@ -17,12 +17,16 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
 
     conv_sigmoid = NULL,
     conv_tanh = NULL,
-    conv = NULL,
+    conv_1x1 = NULL,
+    conv_1x1_filters = NULL,
+
 
     build = function(input_shape) {
 
+      # https://github.com/ibab/tensorflow-wavenet/blob/master/wavenet/model.py#L245
+
       self$conv_sigmoid <- keras::layer_conv_1d(
-        filters = self$num_filters,
+        filters = self$filters,
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "sigmoid",
@@ -30,38 +34,43 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
       )
 
       self$conv_tanh <- keras::layer_conv_1d(
-        filters = self$num_filters,
+        filters = self$filters,
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "tanh",
         padding = "causal"
       )
 
-      self$conv <- keras::layer_conv_1d(filters = 1, kernel_size = 1)
+      self$conv_1x1_filters <- input_shape[[3]]
+
+      self$conv_1x1 <- keras::layer_conv_1d(
+        filters = self$conv_1x1_filters,
+        kernel_size = 1
+      )
 
     },
 
     call = function(x, mask = NULL) {
 
-      skip_connection <- keras::layer_multiply(
+      out <- keras::layer_multiply(
         list(
           self$conv_sigmoid(x),
           self$conv_tanh(x)
         )
       )
 
-      skip_connection <- self$conv(skip_connection)
+      out <- self$conv_1x1(out)
 
       residual <- keras::layer_add(
         list(
           x,
-          skip_connection
+          out
         )
       )
 
       list(
         residual,
-        skip_connection
+        out
       )
     },
 
@@ -87,7 +96,7 @@ layer_wavenet_dilated_causal_convolution_1d <- function(object, filters, kernel_
                                                         dilation_rate, name = NULL,
                                                         trainable = TRUE) {
   keras::create_layer(WaveNetDilatedCausalConvolution1D, object, list(
-    num_filters = filters,
+    filters = filters,
     kernel_size = kernel_size,
     dilation_rate = dilation_rate,
     name = name,

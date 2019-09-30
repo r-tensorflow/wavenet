@@ -4,8 +4,10 @@
 \alias{wavenet}
 \title{Builds the wavenet model}
 \usage{
-wavenet(filters, kernel_size, residual_blocks, input_shape = NULL,
-  input_tensor = NULL, include_top = TRUE)
+wavenet(filters = 16, kernel_size = 2, residual_blocks,
+  input_shape = list(NULL, 1), input_tensor = NULL,
+  initial_kernel_size = 32, initial_filters = 32,
+  output_channels = 256, output_activation = "softmax")
 }
 \arguments{
 \item{filters}{Integer, the dimensionality of the output space (i.e. the
@@ -24,7 +26,13 @@ Typically lenght 2 numeric vector. Used to build the `input_tensor` if no
 
 \item{input_tensor}{Tensor to use as input for the model. Usually a 3d tensor.}
 
-\item{include_top}{wether to include the 256 softmax output layer.}
+\item{initial_kernel_size}{kernel size of the first causal convolution.}
+
+\item{initial_filters}{number of filters in the initial causal convolution.}
+
+\item{output_channels}{number of channels in the output.}
+
+\item{output_activation}{activation function for the last layer. default: 'softmax'}
 }
 \description{
 Builds the wavenet model as described in
