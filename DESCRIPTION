@@ -1,11 +1,16 @@
 Package: wavenet
 Title: WaveNet: A Generative Model for Raw Audio
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R: c(
     person(given = "Daniel",
            family = "Falbel",
            role = c("aut", "cre"),
-           email = "daniel@rstudio.com")
+           email = "daniel@rstudio.com"),
+    person(given = "Panagiotis", 
+           family = "Eustratiadis", 
+           role = c("aut"), 
+           comment = "Original Python implementation: https://github.com/peustr/wavenet")
+           )
 Description: Implements the WaveNet: A Generative Model for Raw Audio.
 License: MIT + file LICENSE
 Encoding: UTF-8
