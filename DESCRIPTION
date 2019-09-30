@@ -1,16 +1,17 @@
 Package: wavenet
-Title: What the Package Does (One Line, Title Case)
+Title: WaveNet: A Generative Model for Raw Audio
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Daniel",
+           family = "Falbel",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+           email = "daniel@rstudio.com")
+Description: Implements the WaveNet: A Generative Model for Raw Audio.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Imports: 
-    magrittr
+    magrittr,
+    keras,
+    zeallot
