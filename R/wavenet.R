@@ -33,20 +33,21 @@ wavenet <- function(filters, kernel_size, residual_blocks, input_shape = NULL,
     object = input,
     filters = filters,
     kernel_size = kernel_size,
-    padding = "same"
+    dilation_rate = 1,
+    padding = "causal"
   )
 
   skip_connections <- NULL
 
   if (length(residual_blocks) == 1) {
-   dilation_rates <- 2^seq_len(residual_blocks)
+    dilation_rates <- 2^seq_len(residual_blocks)
   } else {
     dilation_rates <- residual_blocks
   }
 
   for (i in dilation_rates) {
 
-    c(x, s) %<-% layer_residual_conv_1d(
+    c(x, s) %<-% layer_wavenet_dilated_causal_convolution_1d(
       x,
       filters = filters,
       kernel_size = kernel_size,

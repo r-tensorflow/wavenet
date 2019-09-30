@@ -1,5 +1,5 @@
-ResidualConv1D <- R6::R6Class(
-  "ResidualConv1D",
+WaveNetDilatedCausalConvolution1D <- R6::R6Class(
+  "WaveNetDilatedCausalConvolution",
   inherit = keras::KerasLayer,
   public = list(
 
@@ -26,7 +26,7 @@ ResidualConv1D <- R6::R6Class(
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "sigmoid",
-        padding = "same"
+        padding = "causal"
       )
 
       self$conv_tanh <- keras::layer_conv_1d(
@@ -34,7 +34,7 @@ ResidualConv1D <- R6::R6Class(
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "tanh",
-        padding = "same"
+        padding = "causal"
       )
 
       self$conv <- keras::layer_conv_1d(filters = 1, kernel_size = 1)
@@ -83,9 +83,10 @@ ResidualConv1D <- R6::R6Class(
 #' @inheritParams keras::layer_conv_1d
 #'
 #' @export
-layer_residual_conv_1d <- function(object, filters, kernel_size, dilation_rate,
-                                   name = NULL, trainable = TRUE) {
-  keras::create_layer(ResidualConv1D, object, list(
+layer_wavenet_dilated_causal_convolution_1d <- function(object, filters, kernel_size,
+                                                        dilation_rate, name = NULL,
+                                                        trainable = TRUE) {
+  keras::create_layer(WaveNetDilatedCausalConvolution1D, object, list(
     num_filters = filters,
     kernel_size = kernel_size,
     dilation_rate = dilation_rate,
