@@ -2,6 +2,7 @@
 
 export("%>%")
 export(layer_wavenet_dilated_causal_convolution_1d)
+export(random_crop)
 export(wavenet)
 importFrom(magrittr,"%>%")
-importFrom(zeallot,"%<-%")
+importFrom(tensorflow,tf)

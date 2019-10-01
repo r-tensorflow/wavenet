@@ -19,4 +19,4 @@ RoxygenNote: 6.1.1
 Imports: 
     magrittr,
     keras,
-    zeallot
+    tensorflow

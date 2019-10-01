@@ -17,8 +17,6 @@
 #'
 #' @inheritParams keras::layer_conv_1d
 #'
-#'
-#' @importFrom zeallot %<-%
 #' @export
 wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape = list(NULL, 1),
                     input_tensor = NULL, initial_kernel_size = 32, initial_filters = 32,
@@ -51,12 +49,15 @@ wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape 
 
   for (i in dilation_rates) {
 
-    c(x, s) %<-% layer_wavenet_dilated_causal_convolution_1d(
+    out <- layer_wavenet_dilated_causal_convolution_1d(
       x,
       filters = filters,
       kernel_size = kernel_size,
       dilation_rate = i
     )
+
+    x <- out[[1]]
+    s <- out[[2]]
 
     skip_connections <- append(skip_connections, s)
 
