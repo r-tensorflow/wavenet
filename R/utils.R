@@ -38,3 +38,30 @@ random_crop <- function(x, seconds) {
 
   audio
 }
+
+#' Mu Law encodes the audio
+#'
+#' See section 2.2 of \href{https://arxiv.org/abs/1609.03499}{van der Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
+#' for more information.
+#'
+#' @param x Tensor representing an audio.
+#' @param mu quantization constant.
+#'
+#' @export
+mu_law <- function(x, mu = 255) {
+  tf$sign(x) * (tf$math$log(1 + mu * tf$abs(x))/tf$math$log(1 + mu))
+}
+
+#' Makes the transformation proposed in WaveNet and One Hot encodes the output
+#'
+#' See section 2.2 of \href{https://arxiv.org/abs/1609.03499}{van der Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
+#' for more information.
+#'
+#' @inheritParams mu_law
+#' @export
+mu_law_and_one_hot_encode <- function(x, mu) {
+  tf$cast((mu_law(x) + 1)/2*255, tf$uint8) %>%
+    tf$one_hot(depth = 256L, axis = 1L)
+}
+
+

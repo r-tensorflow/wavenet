@@ -2,6 +2,8 @@
 
 export("%>%")
 export(layer_wavenet_dilated_causal_convolution_1d)
+export(mu_law)
+export(mu_law_and_one_hot_encode)
 export(random_crop)
 export(wavenet)
 importFrom(magrittr,"%>%")
