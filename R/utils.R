@@ -9,8 +9,8 @@
 random_crop <- function(x, seconds) {
 
   size <- as.integer(seconds)*x$sample_rate
-
   audio_shape <- tf$shape(x$audio)
+
 
   # randomly select an starting point
   start <- tf$random$uniform(
