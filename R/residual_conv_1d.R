@@ -30,7 +30,8 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "sigmoid",
-        padding = "causal"
+        padding = "causal",
+        use_bias = FALSE
       )
 
       self$conv_tanh <- keras::layer_conv_1d(
@@ -38,14 +39,16 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
         kernel_size = self$kernel_size,
         dilation_rate = self$dilation_rate,
         activation = "tanh",
-        padding = "causal"
+        padding = "causal",
+        use_bias = FALSE
       )
 
       self$conv_1x1_filters <- input_shape[[3]]
 
       self$conv_1x1 <- keras::layer_conv_1d(
         filters = self$conv_1x1_filters,
-        kernel_size = 1
+        kernel_size = 1,
+        use_bias = FALSE
       )
 
     },

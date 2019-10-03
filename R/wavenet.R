@@ -36,7 +36,8 @@ wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape 
     object = input,
     filters = initial_filters,
     kernel_size = initial_kernel_size,
-    padding = "causal"
+    padding = "causal",
+    use_bias = FALSE
   )
 
   skip_connections <- NULL
@@ -69,7 +70,8 @@ wavenet <- function(filters = 16, kernel_size = 2, residual_blocks, input_shape 
     keras::layer_conv_1d(
       filters = initial_filters/2L, # reduces the number of filters
       kernel_size = 1,
-      activation = "relu"
+      activation = "relu",
+      use_bias = FALSE
     ) %>%
     keras::layer_conv_1d(
       filters = output_channels,
