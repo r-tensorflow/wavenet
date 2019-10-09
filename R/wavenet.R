@@ -1,17 +1,17 @@
-#' Builds the wavenet model
+#' Builds the WaveNet model
 #'
-#' Builds the wavenet model as described in
-#' \href{https://arxiv.org/abs/1609.03499}{van der Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
+#' Builds the WaveNet model as described in
+#' \href{https://arxiv.org/abs/1609.03499}{van den Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
 #'
 #' @param input_shape input shape for the model (not including the axis dimension).
-#'  Typically lenght 2 numeric vector. Used to build the `input_tensor` if no
+#'  Typically length 2 numeric vector. Used to build the `input_tensor` if no
 #'  `input_tensor` is specified.
 #' @param input_tensor Tensor to use as input for the model. Usually a 3d tensor.
 #' @param residual_blocks if a single integer: the number of residual blocks in the
-#'  model - the dilation rate of each block is calculated by `2^i`. if a vector,
+#'  model - the dilation rate of each block `i` is calculated by `2^i`. If a vector,
 #'  then it's used as the dilation rate of each residual block.
 #' @param output_channels number of channels in the output.
-#' @param output_activation activation function for the last layer. default: 'softmax'
+#' @param output_activation activation function for the last layer. Default: 'softmax'
 #' @param initial_kernel_size kernel size of the first causal convolution.
 #' @param initial_filters number of filters in the initial causal convolution.
 #'

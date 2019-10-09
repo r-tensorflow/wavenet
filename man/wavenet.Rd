@@ -2,7 +2,7 @@
 % Please edit documentation in R/wavenet.R
 \name{wavenet}
 \alias{wavenet}
-\title{Builds the wavenet model}
+\title{Builds the WaveNet model}
 \usage{
 wavenet(filters = 16, kernel_size = 2, residual_blocks,
   input_shape = list(NULL, 1), input_tensor = NULL,
@@ -17,11 +17,11 @@ number of output filters in the convolution).}
 length of the 1D convolution window.}
 
 \item{residual_blocks}{if a single integer: the number of residual blocks in the
-model - the dilation rate of each block is calculated by `2^i`. if a vector,
+model - the dilation rate of each block `i` is calculated by `2^i`. If a vector,
 then it's used as the dilation rate of each residual block.}
 
 \item{input_shape}{input shape for the model (not including the axis dimension).
-Typically lenght 2 numeric vector. Used to build the `input_tensor` if no
+Typically length 2 numeric vector. Used to build the `input_tensor` if no
 `input_tensor` is specified.}
 
 \item{input_tensor}{Tensor to use as input for the model. Usually a 3d tensor.}
@@ -32,9 +32,9 @@ Typically lenght 2 numeric vector. Used to build the `input_tensor` if no
 
 \item{output_channels}{number of channels in the output.}
 
-\item{output_activation}{activation function for the last layer. default: 'softmax'}
+\item{output_activation}{activation function for the last layer. Default: 'softmax'}
 }
 \description{
-Builds the wavenet model as described in
-\href{https://arxiv.org/abs/1609.03499}{van der Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
+Builds the WaveNet model as described in
+\href{https://arxiv.org/abs/1609.03499}{van den Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
 }

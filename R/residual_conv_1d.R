@@ -90,7 +90,7 @@ WaveNetDilatedCausalConvolution1D <- R6::R6Class(
 #' Wavenet residual connections
 #'
 #' Residual connection as described in section 2.3 of
-#' \href{https://arxiv.org/abs/1609.03499}{van der Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
+#' \href{https://arxiv.org/abs/1609.03499}{van den Oord et al., \cite{WaveNet: A Generative Model for Raw Audio}}.
 #'
 #' @inheritParams keras::layer_conv_1d
 #'
